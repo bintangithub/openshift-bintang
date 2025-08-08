@@ -30,12 +30,14 @@ pipeline {
             steps {
                 script {
                     sh "oc login --token=sha256~Ssm0xNRD-LQxsHh9GP5_gclKpatxV6_phmGN-9aGARg --server=https://api.rm3.7wse.p1.openshiftapps.com:6443"
-                    // Delete existing project if exists
-                    sh "oc delete project ${OC_PROJECT} || true"
+                    // // Delete existing project if exists
+                    // sh "oc delete project ${OC_PROJECT} || true"
                     
-                    // Create new project
-                    sh "oc new-project ${OC_PROJECT}"
+                    // // Create new project
+                    // sh "oc new-project ${OC_PROJECT}"
                     
+                    sh "oc delete all -l app=springboot-openshift"
+
                     // Deploy using new-app
                     sh "oc new-app ${DOCKER_IMAGE}:${DOCKER_TAG}"
                     
