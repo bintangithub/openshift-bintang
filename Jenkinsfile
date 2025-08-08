@@ -36,8 +36,7 @@ pipeline {
                     // // Create new project
                     // sh "oc new-project ${OC_PROJECT}"
                     
-                    sh "# Hapus deployment
-                        oc delete deployment springboot-openshift &&\
+                    sh "oc delete deployment springboot-openshift &&\
                         oc delete service springboot-openshift &&\
                         oc delete route springboot-openshift &&\
                         oc delete imagestream springboot-openshift &&\
