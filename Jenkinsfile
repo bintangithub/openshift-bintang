@@ -16,7 +16,7 @@ pipeline {
                     sh "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
                     
                     // Login to Docker Hub (gunakan credential Jenkins)
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-bintang', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                         sh "echo ${DOCKER_PASS} | docker login -u ${DOCKER_USER} --password-stdin"
                     }
                     
