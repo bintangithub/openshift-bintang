@@ -18,11 +18,13 @@ pipeline {
         stage('Build and Push Docker Image') {
             steps {
                 echo 'Building, Tagging & Pushing Docker Image'
-                sh '''
-                    docker build -t ${DOCKER_IMAGE} .
-                    docker login ${DOCKER_REGISTRY} -u your_username -p your_password
-                    docker push ${DOCKER_IMAGE}
-                '''
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh '''
+                        docker build -t ${DOCKER_IMAGE} .
+                        docker login ${DOCKER_REGISTRY} -u ${DOCKER_USER} -p ${DOCKER_PASS}
+                        docker push ${DOCKER_IMAGE}
+                    '''
+                }
             }
         }
         
@@ -31,6 +33,7 @@ pipeline {
                 echo 'Deleting and recreating OpenShift project'
                 sh '''
                     oc delete project ${PROJECT_NAME} || true
+                    sleep 30
                     oc new-project ${PROJECT_NAME}
                     oc new-app ${DOCKER_IMAGE}
                 '''
