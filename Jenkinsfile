@@ -7,6 +7,11 @@ pipeline {
     }
 
     stages {
+        stages("Checkout"){
+            steps{
+                git branch: "main", url: "https://github.com/bintangithub/openshift-bintang.git"
+            }
+        }
         stage('Build and Push') {
             steps {
                 echo 'Build & Push'
