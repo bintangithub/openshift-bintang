@@ -1,69 +1,60 @@
 pipeline {
     agent any
-
+    
     environment {
-        DOCKER_IMAGE = "abelitang/springboot-openshift:latest"
-        OC_HPA_PATH = "/home/odp/bintang/hpa.yml"
-        DOCKER_REGISTRY = "docker.io"
-        PROJECT_NAME = "spring-openshift"
+        DOCKER_IMAGE = 'abelitang/springboot-openshift'
+        DOCKER_TAG = 'latest'
+        OC_PROJECT = 'spring-openshift'
+        OC_HPA_PATH = './hpa.yaml'
     }
-
+    
     stages {
-        stage('Checkout') {
-            steps {
-                git branch: "main", url: "https://github.com/bintangithub/openshift-bintang.git"
-            }
-        }
-        
         stage('Build and Push Docker Image') {
             steps {
-                echo 'Building, Tagging & Pushing Docker Image'
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh '''
-                        docker build -t ${DOCKER_IMAGE} .
-                        docker login ${DOCKER_REGISTRY} -u ${DOCKER_USER} -p ${DOCKER_PASS}
-                        docker push ${DOCKER_IMAGE}
-                    '''
+                script {
+                    // Build Docker image
+                    sh "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
+                    
+                    // Login to Docker Hub (gunakan credential Jenkins)
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        sh "echo ${DOCKER_PASS} | docker login -u ${DOCKER_USER} --password-stdin"
+                    }
+                    
+                    // Push image
+                    sh "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
                 }
             }
         }
         
-        stage('Delete and Create OpenShift Project') {
+        stage('OpenShift Deployment') {
             steps {
-                echo 'Deleting and recreating OpenShift project'
-                sh '''
-                    oc delete project ${PROJECT_NAME} || true
-                    sleep 30
-                    oc new-project ${PROJECT_NAME}
-                    oc new-app ${DOCKER_IMAGE}
-                '''
-            }
-        }
-        
-        stage('Manage HPA') {
-            steps {
-                echo 'Deleting and applying HPA'
-                sh '''
-                    oc delete -f ${OC_HPA_PATH} || true
-                    oc apply -f ${OC_HPA_PATH}
-                '''
-            }
-        }
-        
-        stage('Get Route') {
-            steps {
-                echo 'This is your route'
-                sh 'oc get route'
+                script {
+                    // Delete existing project if exists
+                    sh "oc delete project ${OC_PROJECT} || true"
+                    
+                    // Create new project
+                    sh "oc new-project ${OC_PROJECT}"
+                    
+                    // Deploy using new-app
+                    sh "oc new-app ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                    
+                    // Delete existing HPA if exists
+                    sh "oc delete hpa -f ${OC_HPA_PATH} || true"
+                    
+                    // Apply new HPA
+                    sh "oc apply -f ${OC_HPA_PATH}"
+                    
+                    // Get route
+                    sh "oc get route"
+                }
             }
         }
     }
-
+    
     post {
-        success {
-            echo 'Deployment successful ✅'
-        }
-        failure {
-            echo 'Deployment failed ❌'
+        always {
+            // Cleanup
+            sh "docker logout"
         }
     }
 }
