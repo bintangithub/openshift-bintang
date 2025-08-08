@@ -1,0 +1,208 @@
+﻿kind: Deployment
+apiVersion: apps/v1
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: '6'
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"springboot-openshift:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"springboot-openshift\")].image"}]'
+    openshift.io/generated-by: OpenShiftNewApp
+  resourceVersion: '3878920582'
+  name: springboot-openshift
+  uid: f7aef6b6-0c4c-4ab9-94dd-5875b1e90fcc
+  creationTimestamp: '2025-08-07T06:31:40Z'
+  generation: 9
+  managedFields:
+    - manager: kube-controller-manager
+      operation: Update
+      apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:spec':
+          'f:replicas': {}
+      subresource: scale
+    - manager: oc.exe
+      operation: Update
+      apiVersion: apps/v1
+      time: '2025-08-07T06:31:40Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            .: {}
+            'f:image.openshift.io/triggers': {}
+            'f:openshift.io/generated-by': {}
+          'f:labels':
+            .: {}
+            'f:app': {}
+            'f:app.kubernetes.io/component': {}
+            'f:app.kubernetes.io/instance': {}
+        'f:spec':
+          'f:progressDeadlineSeconds': {}
+          'f:revisionHistoryLimit': {}
+          'f:selector': {}
+          'f:strategy':
+            'f:rollingUpdate':
+              .: {}
+              'f:maxSurge': {}
+              'f:maxUnavailable': {}
+            'f:type': {}
+          'f:template':
+            'f:metadata':
+              'f:annotations':
+                .: {}
+                'f:openshift.io/generated-by': {}
+              'f:labels':
+                .: {}
+                'f:deployment': {}
+            'f:spec':
+              'f:containers':
+                'k:{"name":"springboot-openshift"}':
+                  .: {}
+                  'f:imagePullPolicy': {}
+                  'f:name': {}
+                  'f:ports':
+                    .: {}
+                    'k:{"containerPort":8080,"protocol":"TCP"}':
+                      .: {}
+                      'f:containerPort': {}
+                      'f:protocol': {}
+                  'f:resources': {}
+                  'f:terminationMessagePath': {}
+                  'f:terminationMessagePolicy': {}
+              'f:dnsPolicy': {}
+              'f:restartPolicy': {}
+              'f:schedulerName': {}
+              'f:securityContext': {}
+              'f:terminationGracePeriodSeconds': {}
+    - manager: openshift-controller-manager
+      operation: Update
+      apiVersion: apps/v1
+      time: '2025-08-07T06:31:41Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:spec':
+          'f:template':
+            'f:spec':
+              'f:containers':
+                'k:{"name":"springboot-openshift"}':
+                  'f:image': {}
+    - manager: Mozilla
+      operation: Update
+      apiVersion: apps/v1
+      time: '2025-08-07T09:02:25Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:spec':
+          'f:template':
+            'f:spec':
+              'f:containers':
+                'k:{"name":"springboot-openshift"}':
+                  'f:resources':
+                    'f:limits':
+                      .: {}
+                      'f:cpu': {}
+                      'f:memory': {}
+                    'f:requests':
+                      .: {}
+                      'f:cpu': {}
+                      'f:memory': {}
+    - manager: kube-controller-manager
+      operation: Update
+      apiVersion: apps/v1
+      time: '2025-08-07T09:10:25Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            'f:deployment.kubernetes.io/revision': {}
+        'f:status':
+          'f:availableReplicas': {}
+          'f:conditions':
+            .: {}
+            'k:{"type":"Available"}':
+              .: {}
+              'f:lastTransitionTime': {}
+              'f:lastUpdateTime': {}
+              'f:message': {}
+              'f:reason': {}
+              'f:status': {}
+              'f:type': {}
+            'k:{"type":"Progressing"}':
+              .: {}
+              'f:lastTransitionTime': {}
+              'f:lastUpdateTime': {}
+              'f:message': {}
+              'f:reason': {}
+              'f:status': {}
+              'f:type': {}
+          'f:observedGeneration': {}
+          'f:readyReplicas': {}
+          'f:replicas': {}
+          'f:unavailableReplicas': {}
+          'f:updatedReplicas': {}
+      subresource: status
+  namespace: abelitang2-dev
+  labels:
+    app: springboot-openshift
+    app.kubernetes.io/component: springboot-openshift
+    app.kubernetes.io/instance: springboot-openshift
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      deployment: springboot-openshift
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        deployment: springboot-openshift
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+    spec:
+      containers:
+        - name: springboot-openshift
+          image: 'abelitang/springboot-openshift@sha256:7e67470b2910101b2a3ad908ab8c3b9df2f217430c44c0889fb77d491943de5b'
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 550m
+              memory: 564Mi
+            requests:
+              cpu: 282m
+              memory: 275Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
+status:
+  observedGeneration: 9
+  replicas: 10
+  updatedReplicas: 10
+  readyReplicas: 3
+  availableReplicas: 3
+  unavailableReplicas: 7
+  conditions:
+    - type: Progressing
+      status: 'True'
+      lastUpdateTime: '2025-08-07T09:02:31Z'
+      lastTransitionTime: '2025-08-07T06:31:40Z'
+      reason: NewReplicaSetAvailable
+      message: ReplicaSet "springboot-openshift-6dfff8b988" has successfully progressed.
+    - type: Available
+      status: 'False'
+      lastUpdateTime: '2025-08-07T09:07:17Z'
+      lastTransitionTime: '2025-08-07T09:07:17Z'
+      reason: MinimumReplicasUnavailable
+      message: Deployment does not have minimum availability.
