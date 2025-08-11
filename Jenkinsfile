@@ -52,7 +52,11 @@ pipeline {
                         oc expose svc/springboot-openshift"
                     
                     // Apply HPA
-                    sh "oc delete hpa -f ${OC_HPA_PATH} || true"
+                    sh "oc delete hpa -f ${OC_HPA_PATH} || true && \
+                        oc delete -f haproxy-config.yml || true && \
+                        oc delete -f haproxy-deployment.yml || true && \
+                        oc delete -f haproxy-service.yml || true"
+                        
                     sh "oc apply -f ${OC_HPA_PATH} && \
                         oc apply -f haproxy-config.yml && \
                         oc apply -f haproxy-deployment.yml && \
