@@ -48,11 +48,15 @@ pipeline {
                     """
 
                     // Deploy using new-app
-                    sh "oc new-app ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                    sh "oc new-app ${DOCKER_IMAGE}:${DOCKER_TAG} && \
+                        oc expose springboot-openshift"
                     
                     // Apply HPA
                     sh "oc delete hpa -f ${OC_HPA_PATH} || true"
-                    sh "oc apply -f ${OC_HPA_PATH}"
+                    sh "oc apply -f ${OC_HPA_PATH} && \
+                        oc apply -f haproxy-config.yml && \
+                        oc apply -f haproxy-deployment.yml && \
+                        oc apply -f haproxy-service.yml"
                     
                     // Get route
                     sh "oc get route"
