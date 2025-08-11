@@ -49,7 +49,7 @@ pipeline {
 
                     // Deploy using new-app
                     sh "oc new-app ${DOCKER_IMAGE}:${DOCKER_TAG} && \
-                        oc expose springboot-openshift"
+                        oc expose svc/springboot-openshift"
                     
                     // Apply HPA
                     sh "oc delete hpa -f ${OC_HPA_PATH} || true"
