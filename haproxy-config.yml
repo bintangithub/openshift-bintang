@@ -14,11 +14,11 @@ frontend http_front
 backend web_backends
     balance roundrobin
     option httpchk GET /
-    server bintang springboot-openshift-abelitang2-dev.apps.rm3.7wse.p1.openshiftapps.com:8080 resolvers mydns check
-    server pandu springboot-openshift-panduass-dev.apps.rm1.0a51.p1.openshiftapps.com:8080 resolvers mydns check
-    server fayad openshift-spring2-rmuhammadfayyadh-dev.apps.rm1.0a51.p1.openshiftapps.com:8080 resolvers mydns check
-    server najah spring-openshift-sayyidatun-dev.apps.rm1.0a51.p1.openshiftapps.com:8080 resolvers mydns check
-    server hilda java-openshift-jenkins-hildamathilda7-dev.apps.rm1.0a51.p1.openshiftapps.com:8080 resolvers mydns check
+    server bintang springboot-openshift-abelitang2-dev.apps.rm3.7wse.p1.openshiftapps.com:80 resolvers mydns check
+    server pandu springboot-openshift-panduass-dev.apps.rm1.0a51.p1.openshiftapps.com:80 resolvers mydns check
+    server fayad openshift-spring2-rmuhammadfayyadh-dev.apps.rm1.0a51.p1.openshiftapps.com:80 resolvers mydns check
+    server najah spring-openshift-sayyidatun-dev.apps.rm1.0a51.p1.openshiftapps.com:80 resolvers mydns check
+    server hilda java-openshift-jenkins-hildamathilda7-dev.apps.rm1.0a51.p1.openshiftapps.com:80 resolvers mydns check
 
 resolvers mydns
     nameserver dns1 8.8.8.8:53
