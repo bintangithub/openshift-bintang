@@ -29,7 +29,10 @@ pipeline {
         stage('OpenShift Deployment') {
             steps {
                 script {
-                    sh "oc login --token=sha256~Ssm0xNRD-LQxsHh9GP5_gclKpatxV6_phmGN-9aGARg --server=https://api.rm3.7wse.p1.openshiftapps.com:6443"
+                    withCredentials([usernamePassword(credentialsId: 'token-bintang', secretVariable: 'TOKEN')]) {
+                        sh "oc login --token=${TOKEN} --server=https://api.rm3.7wse.p1.openshiftapps.com:6443"
+                    }
+            
                     // // Delete existing project if exists
                     // sh "oc delete project ${OC_PROJECT} || true"
                     
