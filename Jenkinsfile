@@ -15,9 +15,13 @@ pipeline {
                     // Build Docker image
                     sh "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
                     
-                    // Login to Docker Hub (gunakan credential Jenkins)
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-bintang', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh "echo ${DOCKER_PASS} | docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}"
+                    // Login to Docker Hub
+                    withCredentials([usernamePassword(
+                        credentialsId: 'docker-hub-bintang', 
+                        usernameVariable: 'DOCKER_USER', 
+                        passwordVariable: 'DOCKER_PASS'
+                    )]) {
+                        sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}"
                     }
                     
                     // Push image
@@ -29,29 +33,25 @@ pipeline {
         stage('OpenShift Deployment') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'token-bintang', secretVariable: 'TOKEN')]) {
+                    // Login to OpenShift
+                    withCredentials([string(credentialsId: 'token-bintang', variable: 'TOKEN')]) {
                         sh "oc login --token=${TOKEN} --server=https://api.rm3.7wse.p1.openshiftapps.com:6443"
                     }
             
-                    // // Delete existing project if exists
-                    // sh "oc delete project ${OC_PROJECT} || true"
-                    
-                    // // Create new project
-                    // sh "oc new-project ${OC_PROJECT}"
-                    
-                    sh "oc delete deployment springboot-openshift &&\
-                        oc delete service springboot-openshift &&\
-                        oc delete route springboot-openshift &&\
-                        oc delete imagestream springboot-openshift &&\
-                        oc delete bc springboot-openshift"
+                    // Clean up existing resources
+                    sh """
+                        oc delete deployment springboot-openshift || true
+                        oc delete service springboot-openshift || true
+                        oc delete route springboot-openshift || true
+                        oc delete imagestream springboot-openshift || true
+                        oc delete bc springboot-openshift || true
+                    """
 
                     // Deploy using new-app
                     sh "oc new-app ${DOCKER_IMAGE}:${DOCKER_TAG}"
                     
-                    // Delete existing HPA if exists
+                    // Apply HPA
                     sh "oc delete hpa -f ${OC_HPA_PATH} || true"
-                    
-                    // Apply new HPA
                     sh "oc apply -f ${OC_HPA_PATH}"
                     
                     // Get route
