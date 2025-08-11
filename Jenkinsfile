@@ -5,7 +5,7 @@ pipeline {
         DOCKER_IMAGE = 'abelitang/springboot-openshift'
         DOCKER_TAG = 'latest'
         OC_PROJECT = 'spring-openshift'
-        OC_HPA_PATH = './hpa.yaml'
+        OC_HPA_PATH = './hpa.yml'
     }
     
     stages {
