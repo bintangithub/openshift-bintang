@@ -21,7 +21,7 @@ public class DemoApplication implements CommandLineRunner {
 	public class HelloController {
 		@GetMapping("/")
 		public String hello() {
-			return "Hello, Springboot with abelian!";
+			return "Hello, Springboot with bintang!";
 		}
 	}
 
