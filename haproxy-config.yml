@@ -1,14 +1,16 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: haproxy-config
+  name: haproxy-config-jo
 data:
   haproxy.cfg: |
     global
-        log stdout format raw local0 info
+        log stdout format raw local0 debug
 
     defaults
+        log global
         mode http
+        option httplog
         timeout connect 5s
         timeout client  50s
         timeout server  50s
@@ -18,8 +20,11 @@ data:
         default_backend web_backends
 
     backend web_backends
-        server bintang httpbin.org:80 resolvers mydns check inter 3s rise 2 fall 3
+        server httpbin2 httpbin.org:80
+        server bintang java-openshift-jenkins-abelitang2-dev.apps.rm3.7wse.p1.openshiftapps.com:80 check
+        server pandu java-openshift-jenkins-panduass-dev.apps.rm1.0a51.p1.openshiftapps.com:80 check
+        server fayad java-openshift-jenkins-rmuhammadfayyadh-dev.apps.rm1.0a51.p1.openshiftapps.com:80 check
+        server najah java-openshift-jenkins-sayyidatun-dev.apps.rm1.0a51.p1.openshiftapps.com:80 check
+        server hilda java-openshift-jenkins-hildamathilda7-dev.apps.rm1.0a51.p1.openshiftapps.com:80 check
 
-    resolvers mydns
-        nameserver dns1 8.8.8.8:53
-        hold valid 10s
+
