@@ -21,11 +21,11 @@ data:
         balance roundrobin
         option httpchk GET /
         default-server check ssl verify none resolvers mydns
-        server bintang java-openshift-jenkins-abelitang2-dev.apps.rm3.7wse.p1.openshiftapps.com:8080
-        server pandu java-openshift-jenkins-panduass-dev.apps.rm1.0a51.p1.openshiftapps.com:8080
-        server fayad java-openshift-jenkins-rmuhammadfayyadh-dev.apps.rm1.0a51.p1.openshiftapps.com:8080
-        server najah java-openshift-jenkins-sayyidatun-dev.apps.rm1.0a51.p1.openshiftapps.com:8080
-        server hilda java-openshift-jenkins-hildamathilda7-dev.apps.rm1.0a51.p1.openshiftapps.com:8080
+        server bintang java-openshift-jenkins-abelitang2-dev.apps.rm3.7wse.p1.openshiftapps.com:80
+        server pandu java-openshift-jenkins-panduass-dev.apps.rm1.0a51.p1.openshiftapps.com:443
+        server fayad java-openshift-jenkins-rmuhammadfayyadh-dev.apps.rm1.0a51.p1.openshiftapps.com:443
+        server najah java-openshift-jenkins-sayyidatun-dev.apps.rm1.0a51.p1.openshiftapps.com:443
+        server hilda java-openshift-jenkins-hildamathilda7-dev.apps.rm1.0a51.p1.openshiftapps.com:443
 
 
     resolvers mydns
