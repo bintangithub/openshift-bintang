@@ -29,5 +29,5 @@ data:
 
 
     resolvers mydns
-        nameserver dns1 1.1.1.1:53
+        nameserver dns1 1.0.0.1:53
         hold valid 10s
