@@ -18,7 +18,7 @@ data:
         default_backend web_backends
 
     backend web_backends
-        server bintang httpbin.org:80 resolvers mydns check
+        server bintang httpbin.org:80
 
     resolvers mydns
         nameserver dns1 8.8.8.8:53
