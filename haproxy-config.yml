@@ -19,11 +19,6 @@ data:
 
     backend web_backends
         server bintang httpbin.org:80
-        server pandu java-openshift-jenkins-panduass-dev.apps.rm1.0a51.p1.openshiftapps.com:80
-        server fayad java-openshift-jenkins-rmuhammadfayyadh-dev.apps.rm1.0a51.p1.openshiftapps.com:80
-        server najah java-openshift-jenkins-sayyidatun-dev.apps.rm1.0a51.p1.openshiftapps.com:80
-        server hilda java-openshift-jenkins-hildamathilda7-dev.apps.rm1.0a51.p1.openshiftapps.com:80
-
 
     resolvers mydns
         nameserver dns1 8.8.8.8:53
