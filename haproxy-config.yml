@@ -5,7 +5,7 @@ metadata:
 data:
   haproxy.cfg: |
     global
-        log stdout format raw local0
+        log stdout format raw local0 info
 
     defaults
         mode http
@@ -18,7 +18,7 @@ data:
         default_backend web_backends
 
     backend web_backends
-        server bintang httpbin.org:80
+        server bintang httpbin.org:80 resolvers mydns check
 
     resolvers mydns
         nameserver dns1 8.8.8.8:53
